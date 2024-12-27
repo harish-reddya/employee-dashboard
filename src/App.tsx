@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Employees from "./pages/Employees";
+import CreateEmployee from "./pages/CreateEmployee";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,14 @@ const App = () => (
             element={
               <PrivateRoute>
                 <Employees />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/employees/create"
+            element={
+              <PrivateRoute>
+                <CreateEmployee />
               </PrivateRoute>
             }
           />
