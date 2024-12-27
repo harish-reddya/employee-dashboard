@@ -1,27 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import { Plus, Search } from "lucide-react";
-
-const mockEmployees = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@example.com",
-    mobile: "1234567890",
-    designation: "HR",
-    gender: "Male",
-    courses: ["MCA"],
-    createDate: "2024-02-13",
-  },
-  // Add more mock data as needed
-];
+import { useToast } from "@/hooks/use-toast";
 
 const Employees = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [employees, setEmployees] = useState<any[]>([]);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const filteredEmployees = mockEmployees.filter(
+  useEffect(() => {
+    const storedEmployees = JSON.parse(localStorage.getItem("employees") || "[]");
+    setEmployees(storedEmployees);
+  }, []);
+
+  const handleDelete = (id: number) => {
+    if (window.confirm("Are you sure you want to delete this employee?")) {
+      const updatedEmployees = employees.filter((emp) => emp.id !== id);
+      localStorage.setItem("employees", JSON.stringify(updatedEmployees));
+      setEmployees(updatedEmployees);
+      toast({
+        title: "Success",
+        description: "Employee deleted successfully",
+      });
+    }
+  };
+
+  const filteredEmployees = employees.filter(
     (employee) =>
       employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       employee.email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -102,7 +108,10 @@ const Employees = () => {
                     >
                       Edit
                     </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    <button
+                      onClick={() => handleDelete(employee.id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
                       Delete
                     </button>
                   </td>

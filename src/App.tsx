@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Employees from "./pages/Employees";
 import CreateEmployee from "./pages/CreateEmployee";
+import EditEmployee from "./pages/EditEmployee";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,14 @@ const App = () => (
             element={
               <PrivateRoute>
                 <CreateEmployee />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/employees/edit/:id"
+            element={
+              <PrivateRoute>
+                <EditEmployee />
               </PrivateRoute>
             }
           />
